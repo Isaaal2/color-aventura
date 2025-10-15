@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<title>🎨 Mundo Interactivo de Colores</title>
+<style>
+body {
+  font-family: 'Comic Sans MS', cursive, sans-serif;
+  background: linear-gradient(135deg, #f0f8ff, #ffe4e1);
+  margin:0; padding:0; text-align:center; color:#333; overflow-x:hidden;
+}
+
+/* Bolitas decorativas */
+.bolita{position:absolute;border-radius:50%;opacity:0.6;animation:mover 12s infinite alternate;z-index:-1;}
+.bolita:nth-child(1){width:100px;height:100px;background:red;top:10%;left:5%;}
+.bolita:nth-child(2){width:150px;height:150px;background:blue;top:60%;left:80%;}
+.bolita:nth-child(3){width:80px;height:80px;background:yellow;top:40%;left:20%;}
+.bolita:nth-child(4){width:120px;height:120px;background:green;top:75%;left:50%;}
+.bolita:nth-child(5){width:200px;height:200px;background:purple;top:15%;left:60%;}
+@keyframes mover{0%{transform:translateY(0) translateX(0);}100%{transform:translateY(50px) translateX(30px);}}
+
+/* Header */
+header{background:linear-gradient(to right,#ff416c,#ff4b2b);color:white;padding:20px;font-size:28px;font-weight:bold;box-shadow:0 4px 10px rgba(0,0,0,0.3);}
+h1{margin-top:20px;font-size:32px;color:#333;}
+p{font-size:18px;margin:10px auto;width:80%;line-height:1.5;}
+
+/* Secciones */
+.seccion{display:none;padding:20px;animation:fadeIn 0.8s ease-in-out;}
+.activa{display:block;}
+@keyframes fadeIn{from{opacity:0;transform:translateY(-15px);}to{opacity:1;transform:translateY(0);}}
+.colores{display:flex;justify-content:center;flex-wrap:wrap;gap:20px;margin:20px 0;}
+.tarjeta{width:150px;background:white;border-radius:20px;box-shadow:0 4px 12px rgba(0,0,0,0.3);padding:10px;text-align:center;transition: transform 0.3s ease;cursor:pointer;}
+.tarjeta:hover{transform:scale(1.05) rotate(-3deg);}
+.color{width:100%;height:80px;border-radius:15px;margin-bottom:10px;border:3px solid #fff;}
+a,.boton{display:inline-block;margin:10px;padding:10px 20px;background:#ff6f61;color:white;text-decoration:none;border-radius:30px;font-size:16px;font-weight:bold;box-shadow:0 4px 10px rgba(0,0,0,0.3);transition: transform 0.2s, background 0.3s;cursor:pointer;}
+a:hover,.boton:hover{background:#ff3b2e;transform:scale(1.05);}
+
+/* Modal */
+#modal{display:none;position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.7);justify-content:center;align-items:center;}
+#modal-content{background:white;padding:20px;border-radius:20px;width:90%;max-width:500px;text-align:left;animation:fadeIn 0.5s;}
+#modal img{width:100px;height:auto;margin:10px auto;display:block;border-radius:15px;}
+#modal button{margin-top:10px;padding:10px 20px;background:#ff6f61;border:none;color:white;border-radius:15px;cursor:pointer;}
+
+/* Sección de juego */
+#paleta{display:flex;flex-wrap:wrap;justify-content:center;margin-bottom:15px;gap:8px;}
+.color-draggable{width:40px;height:40px;border-radius:50%;cursor:grab;border:2px solid #333;}
+#cuadro{width:150px;height:150px;border:3px dashed #333;display:flex;align-items:center;justify-content:center;margin-bottom:15px;background:white;font-weight:bold;position:relative;overflow:hidden;font-size:14px;}
+#resultado{font-size:16px;margin-top:8px;font-weight:bold;}
+button#listoBtn{padding:8px 16px;font-size:14px;}
+</style>
+</head>
+<body>
+
+<!-- Bolitas -->
+<div class="bolita"></div><div class="bolita"></div><div class="bolita"></div><div class="bolita"></div><div class="bolita"></div>
+
+<header>🎨 Mundo Interactivo de Colores 🌈</header>
+
+<!-- INICIO -->
+<div id="inicio" class="seccion activa">
+  <h1>🌟 Bienvenido al Mundo de los Colores</h1>
+  <p>Explora los colores primarios, secundarios, terciarios y cuaternarios, aprende su historia, psicología y mezcla tus propios colores en nuestro juego interactivo.</p>
+  <button class="boton" onclick="mostrarSeccion('primarios')">🚀 Explorar Colores</button>
+  <button class="boton" onclick="mostrarSeccion('juego')">🎮 Ir al Juego de Mezcla</button>
+  <button class="boton" onclick="mostrarSeccion('teoria')">📘 Teoría del Color</button>
+</div>
+
+<!-- PRIMARIOS -->
+<div id="primarios" class="seccion">
+  <h1>🌟 Colores Primarios</h1>
+  <div class="colores">
+    <div class="tarjeta" onclick="mostrarInfo('Rojo','Origen: pigmentos naturales desde la antigüedad. Psicología: energía, pasión y acción. Usos: señalización y diseño.','https://upload.wikimedia.org/wikipedia/commons/6/6c/Sir_Isaac_Newton_by_Sir_Godfrey_Kneller%2C_Bt.jpg')">
+      <div class="color" style="background:red;"></div><p>🔴 Rojo</p>
+    </div>
+    <div class="tarjeta" onclick="mostrarInfo('Azul','Origen: lapislázuli y minerales históricos. Psicología: calma, serenidad y confianza. Usos: decoración y branding.','')">
+      <div class="color" style="background:blue;"></div><p>🔵 Azul</p>
+    </div>
+    <div class="tarjeta" onclick="mostrarInfo('Amarillo','Origen: azufre y minerales antiguos. Psicología: alegría, creatividad y atención. Usos: publicidad y señalización.','')">
+      <div class="color" style="background:yellow;"></div><p>🟡 Amarillo</p>
+    </div>
+  </div>
+  <a onclick="mostrarSeccion('inicio')">🔙 Volver al Inicio</a>
+  <a onclick="mostrarSeccion('secundarios')">🌈 Colores Secundarios</a>
+</div>
+
+<!-- SECUNDARIOS -->
+<div id="secundarios" class="seccion">
+  <h1>🌈 Colores Secundarios</h1>
+  <div class="colores">
+    <div class="tarjeta" onclick="mostrarInfo('Naranja','Se forma mezclando rojo y amarillo. Psicología: energía, entusiasmo y creatividad. Usos: marketing, diseño y arte.','')">
+      <div class="color" style="background:orange;"></div><p>🟠 Naranja</p>
+    </div>
+    <div class="tarjeta" onclick="mostrarInfo('Verde','Se forma mezclando azul y amarillo. Psicología: naturaleza, equilibrio y tranquilidad. Usos: ecología y decoración.','')">
+      <div class="color" style="background:green;"></div><p>🟢 Verde</p>
+    </div>
+    <div class="tarjeta" onclick="mostrarInfo('Morado','Se forma mezclando rojo y azul. Psicología: misterio, lujo y creatividad. Usos: diseño de interiores y moda.','')">
+      <div class="color" style="background:purple;"></div><p>🟣 Morado</p>
+    </div>
+    <div class="tarjeta" onclick="mostrarInfo('Magenta','Se forma mezclando rojo y morado. Psicología: fantasía y alegría. Usos: arte y moda.','')">
+      <div class="color" style="background:magenta;"></div><p>Magenta</p>
+    </div>
+    <div class="tarjeta" onclick="mostrarInfo('Cian','Se forma mezclando azul y verde. Psicología: frescura y claridad. Usos: impresión y diseño digital.','')">
+      <div class="color" style="background:cyan;"></div><p>Cian</p>
+    </div>
+  </div>
+  <a onclick="mostrarSeccion('primarios')">🔙 Volver a Primarios</a>
+  <a onclick="mostrarSeccion('terciarios')">🌟 Colores Terciarios</a>
+</div>
+
+<!-- TERCIARIOS -->
+<div id="terciarios" class="seccion">
+  <h1>🌟 Colores Terciarios</h1>
+  <div class="colores">
+    <div class="tarjeta" onclick="mostrarInfo('Rojo Naranja','Mezcla de rojo + naranja. Psicología: calidez y vitalidad.','')">
+      <div class="color" style="background:orangered;"></div><p>Rojo Naranja</p>
+    </div>
+    <div class="tarjeta" onclick="mostrarInfo('Amarillo Naranja','Mezcla de amarillo + naranja. Psicología: alegría intensa.','')">
+      <div class="color" style="background:gold;"></div><p>Amarillo Naranja</p>
+    </div>
+    <div class="tarjeta" onclick="mostrarInfo('Amarillo Verde','Mezcla de amarillo + verde. Psicología: frescura y armonía.','')">
+      <div class="color" style="background:yellowgreen;"></div><p>Amarillo Verde</p>
+    </div>
+    <div class="tarjeta" onclick="mostrarInfo('Azul Verde','Mezcla de azul + verde. Psicología: tranquilidad y equilibrio.','')">
+      <div class="color" style="background:teal;"></div><p>Azul Verde</p>
+    </div>
+    <div class="tarjeta" onclick="mostrarInfo('Azul Morado','Mezcla de azul + morado. Psicología: creatividad y misterio.','')">
+      <div class="color" style="background:mediumpurple;"></div><p>Azul Morado</p>
+    </div>
+    <div class="tarjeta" onclick="mostrarInfo('Rojo Morado','Mezcla de rojo + morado. Psicología: pasión y lujo.','')">
+      <div class="color" style="background:crimson;"></div><p>Rojo Morado</p>
+    </div>
+  </div>
+  <a onclick="mostrarSeccion('secundarios')">🔙 Volver a Secundarios</a>
+  <a onclick="mostrarSeccion('cuaternarios')">🌟 Colores Cuaternarios</a>
+</div>
+
+<!-- CUATERNARIOS -->
+<div id="cuaternarios" class="seccion">
+  <h1>🌈 Colores Cuaternarios</h1>
+  <div class="colores">
+    <div class="tarjeta" onclick="mostrarInfo('Rojo Rosa','Mezcla de rojo + rosa. Psicología: amor y ternura.','')">
+      <div class="color" style="background:pink;"></div><p>Rojo Rosa</p>
+    </div>
+    <div class="tarjeta" onclick="mostrarInfo('Azul Cian','Mezcla de azul + cyan. Psicología: calma y frescura.','')">
+      <div class="color" style="background:cyan;"></div><p>Azul Cian</p>
+    </div>
+    <div class="tarjeta" onclick="mostrarInfo('Amarillo Lima','Mezcla de amarillo + verde. Psicología: energía y vitalidad.','')">
+      <div class="color" style="background:#ccff00;"></div><p>Amarillo Lima</p>
+    </div>
+    <div class="tarjeta" onclick="mostrarInfo('Naranja Coral','Mezcla de naranja + rojo naranja. Psicología: dinamismo y alegría.','')">
+      <div class="color" style="background:#ff7f50;"></div><p>Naranja Coral</p>
+    </div>
+  </div>
+  <a onclick="mostrarSeccion('terciarios')">🔙 Volver a Terciarios</a>
+</div>
+
+<!-- JUEGO DE MEZCLA -->
+<div id="juego" class="seccion">
+  <h1>🎮 Mezcla tus colores</h1>
+  <div id="paleta">
+    <div class="color-draggable" draggable="true" style="background:red;" data-color="red"></div>
+    <div class="color-draggable" draggable="true" style="background:yellow;" data-color="yellow"></div>
+    <div class="color-draggable" draggable="true" style="background:blue;" data-color="blue"></div>
+    <div class="color-draggable" draggable="true" style="background:orange;" data-color="orange"></div>
+    <div class="color-draggable" draggable="true" style="background:green;" data-color="green"></div>
+    <div class="color-draggable" draggable="true" style="background:purple;" data-color="purple"></div>
+    <div class="color-draggable" draggable="true" style="background:pink;" data-color="pink"></div>
+    <div class="color-draggable" draggable="true" style="background:cyan;" data-color="cyan"></div>
+    <div class="color-draggable" draggable="true" style="background:brown;" data-color="brown"></div>
+  </div>
+  <div id="cuadro">Arrastra un color aquí</div>
+  <button id="listoBtn">¡Listo!</button>
+  <div id="resultado"></div>
+  <a onclick="mostrarSeccion('inicio')">🔙 Volver al Inicio</a>
+</div>
+
+<!-- TEORÍA -->
+<div id="teoria" class="seccion">
+  <h1>📘 Teoría del Color</h1>
+  <p>Isaac Newton (1642-1727) descubrió que la luz blanca se descompone en los colores del espectro mediante un prisma, sentando las bases de la teoría moderna del color. Newton mostró que los colores no son propiedades del objeto sino de la luz reflejada y percibida por el ojo.</p>
+  <img src="https://images.prismic.io/thedecisionlab/b230c67d-071f-437a-afd7-c025a31b0669_isaac-newton-1.jpg?auto=compress,format&rect=0,0,500,500&w=500&h=500" alt="Isaac Newton">
+  <p>Desde entonces, la teoría del color se ha expandido: se estudian colores primarios, secundarios, terciarios y cuaternarios, y cómo influyen en la psicología, el arte, el diseño y la comunicación visual.</p>
+  <p>La psicología del color analiza cómo los colores afectan emociones, comportamientos y decisiones. Por ejemplo, el rojo puede estimular energía y pasión, el azul calma y genera confianza, mientras que el verde representa naturaleza y equilibrio.</p>
+  <a onclick="mostrarSeccion('inicio')">🔙 Volver al Inicio</a>
+</div>
+
+<!-- MODAL -->
+<div id="modal">
+  <div id="modal-content">
+    <h2 id="color-titulo"></h2>
+    <img id="color-img" src="" alt="">
+    <p id="color-info"></p>
+    <button onclick="cerrarModal()">Cerrar</button>
+  </div>
+</div>
+
+<script>
+function mostrarSeccion(id){
+  document.querySelectorAll('.seccion').forEach(sec=>sec.classList.remove('activa'));
+  document.getElementById(id).classList.add('activa');
+}
+function mostrarInfo(nombre, info, img){
+  document.getElementById('color-titulo').innerText=nombre;
+  document.getElementById('color-info').innerText=info;
+  if(img){document.getElementById('color-img').src=img; document.getElementById('color-img').style.display='block';}
+  else{document.getElementById('color-img').style.display='none';}
+  document.getElementById('modal').style.display='flex';
+}
+function cerrarModal(){document.getElementById('modal').style.display='none';}
+
+// Juego de mezcla
+let arrastrado=null; let coloresSeleccionados=[];
+document.querySelectorAll('.color-draggable').forEach(c=>{c.addEventListener('dragstart',e=>{arrastrado=e.target.dataset.color;});});
+const cuadro=document.getElementById('cuadro');
+cuadro.addEventListener('dragover',e=>{e.preventDefault();});
+cuadro.addEventListener('drop',e=>{
+  e.preventDefault();
+  if(arrastrado){coloresSeleccionados.push(arrastrado);
+    const divColor=document.createElement('div'); divColor.style.background=arrastrado; divColor.style.width='100%'; divColor.style.height='100%';
+    divColor.style.position='absolute'; divColor.style.opacity=0.4; cuadro.appendChild(divColor); cuadro.textContent="";
+  }
+});
+function mezclarColores(colores){
+  if(colores.length===1)return colores[0];
+  const combinaciones={"red+yellow":"orange","yellow+red":"orange","blue+yellow":"green","yellow+blue":"green","red+blue":"purple","blue+red":"purple","red+green":"brown","green+red":"brown","yellow+purple":"brown","purple+yellow":"brown"};
+  const clave=colores.sort().join('+'); return combinaciones[clave]||"gray";
+}
+function tipoColor(color){if(["red","yellow","blue"].includes(color))return"Primario";if(["orange","green","purple"].includes(color))return"Secundario";return"Terciario/Cuaternario";}
+document.getElementById('listoBtn').addEventListener('click',()=>{
+  if(coloresSeleccionados.length===0){alert("Arrastra al menos un color al cuadro");return;}
+  const colorResultante=mezclarColores(coloresSeleccionados); cuadro.style.background=colorResultante; cuadro.textContent="";
+  document.getElementById('resultado').textContent=`Color formado: ${colorResultante} | Tipo: ${tipoColor(colorResultante)}`;
+  coloresSeleccionados=[]; cuadro.innerHTML="";
+});
+</script>
+</body>
+</html>
